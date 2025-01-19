@@ -1,0 +1,22 @@
+# PostgreSQL настройки
+DB_NAME=имя_базы_данных
+DB_USER=имя_пользователя
+DB_HOST=localhost
+DB_PORT=5432
+BACKUP_DIR=/opt/backups
+PGPASSWORD=ваш_пароль
+
+# FTP настройки
+FTP_HOST=ftp-сервер
+FTP_USER=ftp-имя_пользователя
+FTP_PASSWORD=ftp-пароль
+FTP_DIR=/путь/на/ftp/сервере
+
+# Настройки cron
+CRON_USER=имя_пользователя
+
+#Docker настройки
+DOCKER_CONTAINER_NAME=имя_докер_контейнера
+
+# Время жизни бекапов в днях
+DAYS_TO_KEEP=7
