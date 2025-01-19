@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Подключение переменных из setup.env
+# Подключение переменных из .env_backup
 if [ -f Ubuntu/.env_backup ]; then
   export $(grep -v '^#' Ubuntu/.env_backup | xargs)
 else
@@ -12,7 +12,7 @@ fi
 REQUIRED_VARS=(DB_NAME DB_USER DB_HOST DB_PORT BACKUP_DIR PGPASSWORD FTP_HOST FTP_USER FTP_PASSWORD FTP_DIR CRON_USER DOCKER_CONTAINER_NAME CRONTAB_TIME)
 for VAR in "${REQUIRED_VARS[@]}"; do
   if [ -z "${!VAR}" ]; then
-    echo "Переменная $VAR отсутствует в setup.env. Проверьте настройки."
+    echo "Переменная $VAR отсутствует в .env_backup. Проверьте настройки."
     exit 1
   fi
 done

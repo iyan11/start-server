@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Подключение переменных из setup.env
+# Подключение переменных из .env_backup
 if [ -f Ubuntu/.env_backup ]; then
   export $(grep -v '^#' Ubuntu/.env_backup | xargs)
 else
@@ -10,7 +10,7 @@ fi
 
 # Проверка обязательных переменных
 if [[ -z "$DB_NAME" || -z "$DB_USER" || -z "$DB_HOST" || -z "$DB_PORT" || -z "$BACKUP_DIR" || -z "$PGPASSWORD" || -z "$FTP_HOST" || -z "$FTP_USER" || -z "$FTP_PASSWORD" || -z "$FTP_DIR" || -z "$CRON_USER" || -z "$CRONTAB_TIME"]]; then
-  echo "Некоторые переменные отсутствуют в setup.env. Проверьте настройки."
+  echo "Некоторые переменные отсутствуют в .env_backup. Проверьте настройки."
   exit 1
 fi
 

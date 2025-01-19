@@ -186,7 +186,6 @@ change_postgresql_port() {
 add_postgresql_user() {
     dialog --infobox "Добавление пользователя PostgreSQL" 5 40
     sleep 2
-    #USERNAME=$(dialog --inputbox "Введите имя пользователя PostgreSQL:" 10 40 3>&1 1>&2 2>&3 3>&-)
     read -p "Введите имя пользователя: " USERNAME
     USER_PASSWORD=$(dialog --passwordbox "Введите пароль пользователя PostgreSQL:" 10 40 3>&1 1>&2 2>&3 3>&-)
     sudo -u postgres psql -c "CREATE USER $USERNAME WITH PASSWORD '$USER_PASSWORD' SUPERUSER;"
@@ -203,9 +202,9 @@ remove_postgresql_user() {
     dialog --msgbox "Пользователь PostgreSQL $PG_USER и его база данных удалены." 5 40
 }
 
-# Функия добавления возмонжности подключения к PostgreSQL из вне
+# Функция добавления возможности подключения к PostgreSQL из вне
 open_postgres_enter() {
-    dialog --infobox "Добавление возмонжности подключения к PostgreSQL из вне" 5 40
+    dialog --infobox "Добавление возможности подключения к PostgreSQL из вне" 5 40
     sleep 2
     echo "host    all             all             0.0.0.0/0               md5" | sudo tee -a /etc/postgresql/$POSTGRESQL_VERSION/main/pg_hba.conf
     sudo systemctl restart postgresql
@@ -226,7 +225,6 @@ add_ssh_and_postgres_user() {
     sudo usermod -aG sudo $USERNAME
     sudo usermod -aG www-data $USERNAME
     sudo usermod -aG docker $USERNAME
-    #USER_PASSWORD=$(dialog --passwordbox "Введите пароль пользователя PostgreSQL:" 10 40 3>&1 1>&2 2>&3 3>&-)
     echo "Введите пароль пользователя PostgreSQL: "
     read -s USER_PASSWORD
     sudo -u postgres psql -c "CREATE USER $USERNAME WITH PASSWORD '$USER_PASSWORD' SUPERUSER;"
