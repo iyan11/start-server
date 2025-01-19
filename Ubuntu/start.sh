@@ -49,16 +49,16 @@ update_and_install_packages() {
     dialog --msgbox "Пакеты установлены и обновлены." 5 40
 }
 
-# Функция для установки PostgreSQL и PostGIS
+# Функция для установки PostgresSQL и PostGIS
 install_postgresql_and_postgis() {
-    dialog --infobox "Выполняется установка PostgreSQL + PostGIS" 5 40
+    dialog --infobox "Выполняется установка PostgresSQL + PostGIS" 5 40
     sleep 2
     sudo apt-get install -y postgresql-$POSTGRESQL_VERSION postgresql-$POSTGRESQL_VERSION-postgis-3
     sudo -u postgres psql -c "CREATE DATABASE $DB_NAME;"
     sudo -u postgres psql -c "CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASSWORD';"
     sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
     sudo -u postgres psql -d $DB_NAME -c "CREATE EXTENSION postgis;"
-    dialog --msgbox "PostgreSQL и PostGIS установлены." 5 40
+    dialog --msgbox "PostgresSQL и PostGIS установлены." 5 40
 }
 
 # Функция для установки PHP и необходимых модулей
@@ -135,7 +135,6 @@ install_composer_and_git() {
 add_user_ssh() {
     dialog --infobox "Добавление пользователя SSH" 5 40
     sleep 2
-    #USERNAME=$(dialog --inputbox "Введите имя пользователя:" 10 40 3>&1 1>&2 2>&3 3>&-)
     read -p "Введите имя пользователя: " USERNAME
     sudo adduser $USERNAME
     sudo su - $USERNAME -c "mkdir -p ~/.ssh && nano ~/.ssh/authorized_keys"
@@ -171,49 +170,49 @@ configure_ssh_security() {
     dialog --msgbox "SSH настроен." 5 40
 }
 
-# Функция для изменения порта PostgreSQL
+# Функция для изменения порта PostgresSQL
 change_postgresql_port() {
-    dialog --infobox "Выполняется изменение порта PostgreSQL" 5 40
+    dialog --infobox "Выполняется изменение порта PostgresSQL" 5 40
     sleep 2
     sudo sed -i "s/#port = 5432/port = $PG_PORT/" /etc/postgresql/$POSTGRESQL_VERSION/main/postgresql.conf
     sudo sed -i "s/port = 5432/port = $PG_PORT/" /etc/postgresql/$POSTGRESQL_VERSION/main/postgresql.conf
     sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/$POSTGRESQL_VERSION/main/postgresql.conf
     sudo systemctl restart postgresql
-    dialog --msgbox "Порт PostgreSQL изменён." 5 40
+    dialog --msgbox "Порт PostgresSQL изменён." 5 40
 }
 
-# Функция для добавления пользователей в PostgreSQL
+# Функция для добавления пользователей в PostgresSQL
 add_postgresql_user() {
-    dialog --infobox "Добавление пользователя PostgreSQL" 5 40
+    dialog --infobox "Добавление пользователя PostgresSQL" 5 40
     sleep 2
     read -p "Введите имя пользователя: " USERNAME
-    USER_PASSWORD=$(dialog --passwordbox "Введите пароль пользователя PostgreSQL:" 10 40 3>&1 1>&2 2>&3 3>&-)
+    USER_PASSWORD=$(dialog --passwordbox "Введите пароль пользователя PostgresSQL:" 10 40 3>&1 1>&2 2>&3 3>&-)
     sudo -u postgres psql -c "CREATE USER $USERNAME WITH PASSWORD '$USER_PASSWORD' SUPERUSER;"
     sudo -u postgres psql -c "CREATE DATABASE $USERNAME;"
     sudo -u postgres psql -d $USERNAME -c "CREATE EXTENSION postgis;"
-    dialog --msgbox "Пользователь PostgreSQL добавлен." 5 40
+    dialog --msgbox "Пользователь PostgresSQL добавлен." 5 40
 }
 
-# Функция для удаления пользователя PostgreSQL
+# Функция для удаления пользователя PostgresSQL
 remove_postgresql_user() {
-    PG_USER=$(dialog --inputbox "Введите имя пользователя PostgreSQL для удаления:" 10 40 3>&1 1>&2 2>&3 3>&-)
+    PG_USER=$(dialog --inputbox "Введите имя пользователя PostgresSQL для удаления:" 10 40 3>&1 1>&2 2>&3 3>&-)
     sudo -u postgres psql -c "DROP USER $PG_USER;"
     sudo -u postgres psql -c "DROP DATABASE $PG_USER;"
-    dialog --msgbox "Пользователь PostgreSQL $PG_USER и его база данных удалены." 5 40
+    dialog --msgbox "Пользователь PostgresSQL $PG_USER и его база данных удалены." 5 40
 }
 
-# Функция добавления возможности подключения к PostgreSQL из вне
+# Функция добавления возможности подключения к PostgresSQL из вне
 open_postgres_enter() {
-    dialog --infobox "Добавление возможности подключения к PostgreSQL из вне" 5 40
+    dialog --infobox "Добавление возможности подключения к PostgresSQL из вне" 5 40
     sleep 2
     echo "host    all             all             0.0.0.0/0               md5" | sudo tee -a /etc/postgresql/$POSTGRESQL_VERSION/main/pg_hba.conf
     sudo systemctl restart postgresql
-    dialog --msgbox "Возможность подключения к PostgreSQL из вне добавлена." 5 40
+    dialog --msgbox "Возможность подключения к PostgresSQL из вне добавлена." 5 40
 }
 
 #Функция сохдания и ssh, и postgres пользователя
 add_ssh_and_postgres_user() {
-    dialog --infobox "Добавление пользователя SSH и PostgreSQL" 5 40
+    dialog --infobox "Добавление пользователя SSH и PostgresSQL" 5 40
     sleep 2
     #USERNAME=$(dialog --inputbox "Введите имя пользователя:" 10 40 3>&1 1>&2 2>&3 3>&-)
     read -p "Введите имя пользователя: " USERNAME
@@ -225,12 +224,12 @@ add_ssh_and_postgres_user() {
     sudo usermod -aG sudo $USERNAME
     sudo usermod -aG www-data $USERNAME
     sudo usermod -aG docker $USERNAME
-    echo "Введите пароль пользователя PostgreSQL: "
+    echo "Введите пароль пользователя PostgresSQL: "
     read -s USER_PASSWORD
     sudo -u postgres psql -c "CREATE USER $USERNAME WITH PASSWORD '$USER_PASSWORD' SUPERUSER;"
     sudo -u postgres psql -c "CREATE DATABASE $USERNAME;"
     sudo -u postgres psql -d $USERNAME -c "CREATE EXTENSION postgis;"
-    dialog --msgbox "Пользователь SSH и PostgreSQL добавлен." 5 40
+    dialog --msgbox "Пользователь SSH и PostgresSQL добавлен." 5 40
 }
 
 #Функция установки Docker
@@ -355,19 +354,19 @@ while true; do
                     --menu "Выберите опцию:" \
                     20 60 16 \
                     1 "Обновить и установить пакеты" \
-                    2 "Установить PostgreSQL и PostGIS" \
+                    2 "Установить PostgresSQL и PostGIS" \
                     3 "Установить PHP" \
                     4 "Установить и настроить Nginx" \
                     5 "Добавить домен в Nginx" \
                     6 "Установить Composer и Git" \
                     7 "Настроить безопасность SSH" \
-                    8 "Изменить порт PostgreSQL" \
-                    9 "Добавить пользователя SSH и PostgreSQL" \
+                    8 "Изменить порт PostgresSQL" \
+                    9 "Добавить пользователя SSH и PostgresSQL" \
                     10 "Выполнить все шаги" \
                     11 "Добавить пользователя SSH" \
-                    12 "Добавить пользователя в PostgreSQL" \
+                    12 "Добавить пользователя в PostgresSQL" \
                     13 "Удалить пользователя SSH" \
-                    14 "Удалить пользователя PostgreSQL" \
+                    14 "Удалить пользователя PostgresSQL" \
                     15 "Установить Docker" \
                     16 "Создать скрипт бекапов (обязательно настроить .env_backup)" \
                     0 "Выход" \
